@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>在庫管理</title>
+</head>
+<body>
+	<div th:insert="common/sourcelist :: sourcelist"></div>
+	<div th:replace="common/header :: header"></div>
+<h2>在庫管理</h2>
+
+<!-- メッセージ表示 -->
+<p th:text="${message}"></p>
+
+<!-- 入力フォーム -->
+<form th:action="@{/inventory/update}" method="post">
+    商品名：<input type="text" name="productName" required />
+    数量（増減）：<input type="number" name="quantity" required />
+    <button type="submit">更新</button>
+</form>
+
+<hr>
+
+<h3>在庫一覧</h3>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>商品名</th>
+        <th>在庫数</th>
+    </tr>
+
+    <tr th:each="p : ${products}">
+        <td th:text="${p.id}"></td>
+        <td th:text="${p.productName}"></td>
+        <td th:text="${p.quantity}"></td>
+    </tr>
+</table>
+
+</body>
+</html>

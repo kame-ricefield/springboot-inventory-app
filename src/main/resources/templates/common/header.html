@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="navbar bg-info navbar-dark" th:fragment="header">
+	<div class="container-fluid">
+		<a class="navbar-brand" th:href="@{/menu}">トップへ戻る</a>
+		<div class="d-flex align-items-center">
+			<span class="navbar-text">
+				ログインID:
+				<span sec:authentication="name"></span>
+			</span>
+			<form th:action="@{/logout}" method="post">
+				<input type="submit" class="btn btn-dark" value="ログアウト" />
+			</form>
+		</div>
+	</div>
+</nav>
+</body>
+</html>
