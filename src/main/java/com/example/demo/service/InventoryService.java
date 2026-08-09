@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +19,7 @@ public class InventoryService {
     private final ProductRepository repository;
 
     /**
-     * 在庫管理処理
+     * 在庫更新処理
      * ・商品がなければ新規登録
      * ・あれば在庫数を増減
      */
@@ -41,7 +42,7 @@ public class InventoryService {
         int newQuantity = product.getQuantity() + changeQuantity;
 
         if (newQuantity < 0) {
-            throw new IllegalArgumentException("在庫が不足しています");
+            throw new IllegalArgumentException("在庫数が0未満になるため更新できません。");
         }
 
         product.setQuantity(newQuantity);
@@ -50,8 +51,11 @@ public class InventoryService {
 
     /**
      * 在庫一覧取得（画面表示用）
+     * 在庫数が0のものは画面に表示しない。
      */
     public List<Product> findAll() {
-        return repository.findAll();
+        return repository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream()
+                .filter(p -> p.getQuantity() > 0)
+                .toList();
     }
 }

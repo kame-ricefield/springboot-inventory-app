@@ -6,10 +6,10 @@ import lombok.Data;
 
 @Data
 public class SignupForm {
-	@Size(min = 1,max = 20)
+	@Size(min = 4, max = 20)
 	private String loginId;
-	
-	@Size(min = 1 ,max = 20)
+
+	@Size(min = 4, max = 20)
 	private String password;
 
 }

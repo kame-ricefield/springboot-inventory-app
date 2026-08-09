@@ -21,7 +21,7 @@ public class InventoryController {
     private final InventoryService service;
 
     /**
-     * 	トップページと在庫一覧を表示します。
+     * トップページと在庫一覧を表示します。
      */
     @GetMapping(UrlConst.INVENTORY)
     public String view(Model model) {
@@ -30,7 +30,7 @@ public class InventoryController {
     }
 
     /**
-     * 在庫更新処理
+     * 在庫更新処理。在庫一覧も表示します。
      */
     @PostMapping(UrlConst.INVENTORYUPDATE)
     public String update(

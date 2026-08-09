@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         var userInfo = repository.findById(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));//ユーザ情報未取得の時、例外クラス起動
 
-        return User.withUsername(userInfo.getLoginId())//
+        return User.withUsername(userInfo.getLoginId())
                 .password(userInfo.getPassword())
                 .roles("USER")//権限
                 .build();//以上の情報でUserを作ります
