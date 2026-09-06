@@ -3,56 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <title>在庫管理</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #ffffff;
+        }
+
+        .page-content {
+            margin-left: 100px;
+            padding: 24px;
+            background-color: #ffffff;
+        }
+
+        .inventory-update-field {
+            margin-bottom: 6px;
+        }
+
+        form {
+            max-width: 420px;
+        }
+
+        table {
+            width: 100%;
+            max-width: 720px;
+            border-collapse: separate;
+        }
+
+        th, td {
+            padding: 6px;
+            text-align: left;
+        }
+
+        thead th {
+            background-color: #efefef;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #efefef;
+        }
+    </style>
 </head>
 
 <body>
 	<div th:insert="common/sourcelist :: sourcelist"></div>
 	<div th:replace="common/header :: header"></div>
-<h2>在庫更新</h2>
 
-<!-- メッセージ表示 -->
-<p th:if="${message != null}" th:text="${message}"></p>
-<p th:if="${inventoryUpdateDisabled != null && inventoryUpdateDisabled == true}">
-    このアカウントでは在庫更新は実行できません。
-</p>
+    <div class="page-content">
+        <h2>在庫更新</h2>
 
-<!-- 入力フォーム -->
-<form th:if="${inventoryUpdateDisabled == null || inventoryUpdateDisabled == false}" th:action="@{/inventory/update}" method="post" onsubmit="return confirm('本当に更新してもよろしいですか？');">
-    <div class="inventory-update-field">
-        <label for="productName">商品選択</label>
-        <select id="productName" name="productName" required>
-            <option value="" disabled selected>商品を選択してください</option>
-            <option th:each="p : ${products}" th:value="${p.productName}" th:text="${p.productName}"></option>
-        </select>
+        <!-- メッセージ表示 -->
+        <p th:if="${message != null}" th:text="${message}"></p>
+        <p th:if="${inventoryUpdateDisabled != null && inventoryUpdateDisabled == true}">
+            このアカウントでは在庫更新は実行できません。
+        </p>
+
+        <!-- 入力フォーム -->
+        <form th:if="${inventoryUpdateDisabled == null || inventoryUpdateDisabled == false}" th:action="@{/inventory/update}" method="post" onsubmit="return confirm('本当に更新してもよろしいですか？');">
+            <input type="hidden" name="keyword" th:value="${keyword}" />
+            <div class="inventory-update-field">
+                <label for="productName">商品選択</label>
+                <select id="productName" name="productName" required>
+                    <option value="" disabled selected>商品を選択してください</option>
+                    <option th:each="p : ${products}" th:value="${p.productName}" th:text="${p.productName}"></option>
+                </select>
+            </div>
+
+            <div class="inventory-update-field">
+                <label for="quantity">数量更新</label>
+                <input id="quantity" type="number" name="quantity" required />
+            </div>
+
+            <div class="inventory-update-field">
+                <button type="submit">更新</button>
+            </div>
+        </form>
+
+        <hr>
+        <h2>在庫一覧</h2>
+
+        <!-- 在庫一覧 -->
+        <form th:action="@{/inventory}" method="get">
+            <label for="keyword">商品名検索</label>
+            <input id="keyword" type="search" name="keyword" th:value="${keyword}" />
+            <button type="submit">検索</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>商品名</th>
+                    <th>在庫数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${products}">
+                    <td th:text="${p.id}"></td>
+                    <td th:text="${p.productName}"></td>
+                    <td th:text="${p.quantity}"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-
-    <div class="inventory-update-field">
-        <label for="quantity">数量更新</label>
-        <input id="quantity" type="number" name="quantity" required />
-    </div>
-
-    <div class="inventory-update-action">
-        <button type="submit">更新</button>
-    </div>
-</form>
-
-<hr>
-
-<h2>在庫一覧</h2>
-
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>商品名</th>
-        <th>在庫数</th>
-    </tr>
-
-    <tr th:each="p : ${products}">
-        <td th:text="${p.id}"></td>
-        <td th:text="${p.productName}"></td>
-        <td th:text="${p.quantity}"></td>
-    </tr>
-</table>
-
 </body>
 </html>

@@ -48,11 +48,23 @@ public class InventoryService {
 
     /**
      * 在庫一覧取得（画面表示用）
-     * 在庫数が0のものは画面に表示しない。
+     * ・在庫数が0のものは画面に表示しない。
      */
     public List<Product> findAll() {
         return repository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream()
                 .filter(p -> p.getQuantity() > 0)
                 .toList();
+    }
+
+    /**
+     * 商品名で在庫を部分一致検索します。
+     * ・検索キーワードが空文字の場合は全件取得します。
+     */
+    public List<Product> search(String productName) {
+        if (productName == null || productName.isBlank()) {
+            return findAll();
+        }
+
+        return repository.findByProductNameContainingIgnoreCaseAndQuantityGreaterThanOrderByIdAsc(productName, 0);
     }
 }

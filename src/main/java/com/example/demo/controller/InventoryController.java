@@ -17,7 +17,7 @@ import com.example.demo.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 
 /*
- * 在庫管理画面のコントローラーです。
+ * 在庫管理画面のコントローラー。
  */
 @Controller
 @RequiredArgsConstructor
@@ -27,26 +27,31 @@ public class InventoryController {
     private final UserInfoRepository userInfoRepository;
 
     /**
-     * トップページと在庫一覧を表示します。
+     * トップページと在庫一覧表示。
      */
     @GetMapping(UrlConst.INVENTORY)
-    public String view(Model model) {
-        model.addAttribute("products", service.findAll());
+    public String view(
+            @RequestParam(required = false, defaultValue = "") String keyword,
+            Model model) {
+        model.addAttribute("products", service.search(keyword));
+        model.addAttribute("keyword", keyword);
         model.addAttribute("inventoryUpdateDisabled", isInventoryUpdateDisabled());
         return "inventory";
     }
 
     /**
-     * 在庫更新処理。在庫一覧も表示します。
+     * 在庫更新/在庫一覧表示。商品名が存在しない場合は新規登録、存在する場合は在庫数を増減。
      */
     @PostMapping(UrlConst.INVENTORYUPDATE)
     public String update(
             @RequestParam String productName,
             @RequestParam int quantity,
+            @RequestParam(required = false, defaultValue = "") String keyword,
             Model model) {
 
         if (isInventoryUpdateDisabled()) {
-            model.addAttribute("products", service.findAll());
+            model.addAttribute("products", service.search(keyword));
+            model.addAttribute("keyword", keyword);
             model.addAttribute("inventoryUpdateDisabled", true);
             return "inventory";
         }
@@ -58,14 +63,15 @@ public class InventoryController {
             model.addAttribute("message", e.getMessage());
         }
 
-        model.addAttribute("products", service.findAll());
+        model.addAttribute("products", service.search(keyword));
+        model.addAttribute("keyword", keyword);
         model.addAttribute("inventoryUpdateDisabled", false);
 
         return "inventory";
     }
 
     /**
-     * 在庫更新が無効かどうかを判定します。
+     * 在庫更新が無効かどうかを判定。
      *
      * @return 在庫更新が無効な場合true、それ以外はfalse
      */
