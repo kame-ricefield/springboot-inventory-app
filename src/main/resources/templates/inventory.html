@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>在庫管理</title>
@@ -54,9 +54,14 @@
 	<div th:replace="common/header :: header"></div>
 
     <div class="page-content">
+        <!-- 新規ユーザ登録へのリンク -->
+        <div sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/signup}">▶ユーザ登録はコチラ</a>
+        </div>
+
         <h2>在庫更新</h2>
 
-        <!-- メッセージ表示 -->
+        <!-- メッセージ表示欄 -->
         <p th:if="${message != null}" th:text="${message}"></p>
         <p th:if="${inventoryUpdateDisabled != null && inventoryUpdateDisabled == true}">
             このアカウントでは在庫更新は実行できません。
@@ -83,7 +88,6 @@
             </div>
         </form>
 
-        <hr>
         <h2>在庫一覧</h2>
 
         <!-- 在庫一覧 -->

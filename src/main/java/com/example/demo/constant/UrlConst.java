@@ -17,6 +17,6 @@ public class UrlConst {
 	public static final String INVENTORYUPDATE = "/inventory/update";
 	
 	/* 認証不要画面 */
-	public static final String[] NO_AUTHENTICATION = {LOGIN, SIGNUP, "/webjars/**"};
+	public static final String[] NO_AUTHENTICATION = {LOGIN, "/webjars/**"};
 	
 }
