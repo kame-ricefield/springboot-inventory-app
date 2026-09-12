@@ -20,8 +20,28 @@
             margin-bottom: 6px;
         }
 
+        .inventory-toolbar {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
         form {
             max-width: 420px;
+        }
+
+        .toolbar-form {
+            margin: 0;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-form label {
+            font-weight: bold;
         }
 
         table {
@@ -91,11 +111,18 @@
         <h2>在庫一覧</h2>
 
         <!-- 在庫一覧 -->
-        <form th:action="@{/inventory}" method="get">
-            <label for="keyword">商品名検索</label>
-            <input id="keyword" type="search" name="keyword" th:value="${keyword}" />
-            <button type="submit">検索</button>
-        </form>
+        <div class="inventory-toolbar">
+            <form class="toolbar-form" th:action="@{/inventory}" method="get">
+                <label for="keyword">商品名検索</label>
+                <input id="keyword" type="search" name="keyword" th:value="${keyword}" />
+                <button type="submit">検索</button>
+            </form>
+
+            <form class="toolbar-form" th:action="@{/inventory/export}" method="post">
+                <input type="hidden" name="keyword" th:value="${keyword}" />
+                <button type="submit">CSVダウンロード</button>
+            </form>
+        </div>
 
         <table>
             <thead>

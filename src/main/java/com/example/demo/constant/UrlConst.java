@@ -15,6 +15,9 @@ public class UrlConst {
 	
 	/* 在庫更新処理 */
 	public static final String INVENTORYUPDATE = "/inventory/update";
+
+	/* 在庫CSV出力処理 */
+	public static final String INVENTORYEXPORT = "/inventory/export";
 	
 	/* 認証不要画面 */
 	public static final String[] NO_AUTHENTICATION = {LOGIN, "/webjars/**"};

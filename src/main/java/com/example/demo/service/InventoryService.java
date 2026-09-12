@@ -2,11 +2,14 @@ package com.example.demo.service;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.entity.Product;
 import com.example.demo.repository.ProductRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -66,5 +69,25 @@ public class InventoryService {
         }
 
         return repository.findByProductNameContainingIgnoreCaseAndQuantityGreaterThanOrderByIdAsc(productName, 0);
+    }
+
+    /**
+     * 在庫一覧をCSV文字列に変換します。
+     */
+    public String createCsvContent(List<Product> products) {
+        StringBuilder csv = new StringBuilder();
+        csv.append("ID,商品名,在庫数\n");
+
+        for (Product product : products) {
+            String productName = product.getProductName() == null ? "" : product.getProductName();
+            csv.append(product.getId())
+                    .append(',')
+                    .append(productName)
+                    .append(',')
+                    .append(product.getQuantity())
+                    .append('\n');
+        }
+
+        return csv.toString();
     }
 }

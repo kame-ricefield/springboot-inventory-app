@@ -1,7 +1,12 @@
 package com.example.demo.controller;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.constant.UrlConst;
+import com.example.demo.entity.Product;
 import com.example.demo.entity.UserInfo;
 import com.example.demo.repository.UserInfoRepository;
 import com.example.demo.service.InventoryService;
@@ -40,7 +46,8 @@ public class InventoryController {
     }
 
     /**
-     * 在庫更新/在庫一覧表示。商品名が存在しない場合は新規登録、存在する場合は在庫数を増減。
+     * 在庫更新/在庫一覧表示。
+     * 商品名が存在しない場合は新規登録、存在する場合は在庫数を増減。
      */
     @PostMapping(UrlConst.INVENTORYUPDATE)
     public String update(
@@ -68,6 +75,23 @@ public class InventoryController {
         model.addAttribute("inventoryUpdateDisabled", false);
 
         return "inventory";
+    }
+
+    /**
+     * 在庫一覧をCSVファイルとしてダウンロード。
+     */
+    @PostMapping(UrlConst.INVENTORYEXPORT)
+    public ResponseEntity<byte[]> exportCsv(
+            @RequestParam(required = false, defaultValue = "") String keyword,
+            Model model) {
+        List<Product> products = service.search(keyword);
+        byte[] csvBytes = service.createCsvContent(products).getBytes(StandardCharsets.UTF_8);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "text/csv; charset=UTF-8");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"inventory.csv\"");
+
+        return new ResponseEntity<>(csvBytes, headers, HttpStatus.OK);
     }
 
     /**
