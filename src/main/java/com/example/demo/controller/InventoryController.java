@@ -50,7 +50,7 @@ public class InventoryController {
      * 商品名が存在しない場合は新規登録、存在する場合は在庫数を増減。
      */
     @PostMapping(UrlConst.INVENTORYUPDATE)
-    public String update(
+    public String inventoryUpdate(
             @RequestParam String productName,
             @RequestParam int quantity,
             @RequestParam(required = false, defaultValue = "") String keyword,

@@ -6,21 +6,33 @@
 <title>ログイン画面</title>
 </head>
 
-<body>
-<div class="container-fluid">
- <h2>ログインして下さい</h2>
- <span th:text="${errorMsg}"></span>
- <form th:action="@{/login}" method="post" th:object="${loginForm}">
-   <div class="form-group">
-     <div class="col-2">
-      <p><label>ログインID</label>
-      <input class="form-control" type="text" th:field="*{loginId}">
-      <p><label>パスワード</label>
-      <input class="form-control" type="password" th:field="*{password}">
-     </div>
-   <p><input class="btn btn-primary" type="submit" value="ログインする">
-   </div>
- </form>
+<body class="bg-light">
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="h3 mb-4 text-center">ログインして下さい</h2>
+
+          <div th:if="${errorMsg != null}" class="alert alert-danger" th:text="${errorMsg}"></div>
+
+          <form th:action="@{/login}" method="post" th:object="${loginForm}">
+            <div class="mb-3">
+              <label for="loginId" class="form-label">ログインID</label>
+              <input id="loginId" class="form-control" type="text" th:field="*{loginId}">
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">パスワード</label>
+              <input id="password" class="form-control" type="password" th:field="*{password}">
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">ログインする</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
 

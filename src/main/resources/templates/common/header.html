@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<nav class="navbar bg-info navbar-dark" th:fragment="header">
+<nav class="navbar navbar-dark bg-primary" th:fragment="header">
 	<div class="container-fluid">
-		<a class="navbar-brand" th:href="@{/inventory}">トップへ戻る</a>
-		<div class="d-flex align-items-center">
-			<span class="navbar-text">
+		<a class="navbar-brand me-3" th:href="@{/inventory}">トップへ戻る</a>
+		<div class="d-flex align-items-center ms-auto gap-3">
+			<span class="navbar-text text-white">
 				ログインID:
 				<span sec:authentication="name"></span>
 			</span>
-			<form th:action="@{/logout}" method="post">
-				<input type="submit" class="btn btn-dark" value="ログアウト" />
+			<form th:action="@{/logout}" method="post" class="m-0">
+				<input type="submit" class="btn btn-outline-light" value="ログアウト" />
 			</form>
 		</div>
 	</div>
